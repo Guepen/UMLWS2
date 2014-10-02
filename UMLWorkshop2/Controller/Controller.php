@@ -27,7 +27,14 @@ class Controller{
             $member = new Member($firstname, $surname, $ssnr );
             $this->memberRepository->add($member);
         }
-            return $this->memberView->showMembers($this->memberRepository->getMembers());
+
+        if($this->memberView->userPressedMember()){
+            $id = $this->memberView->getUserId();
+            $member = $this->memberRepository->getMember($id);
+            return $this->memberView->showMember($member);
+        }
+
+        return $this->memberView->showMembers($this->memberRepository->getMembers());
     }
 
 }

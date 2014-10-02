@@ -8,7 +8,7 @@ class MemberRepository extends Repository {
     private static $firstname = 'firstname';
     private static $surname = 'surname';
     private static $ssnr = 'ssnr';
-    private static $unique = 'unique';
+    private static $id = 'id';
     private $db;
     private $memberList;
     private $memberModel;
@@ -57,7 +57,27 @@ class MemberRepository extends Repository {
             return $this->memberList;
 
         } catch (\PDOException $e) {
-            die("Ett oväntat fel inträffade");
+            var_dump($e->getMessage());
+        }
+    }
+
+    public function getMember($id){
+        try {
+
+            $sql = "SELECT * FROM $this->dbTable WHERE " . self::$id . "=$id";
+
+            $query = $this->db->prepare($sql);
+            $query->execute();
+
+            $query = $this->db -> prepare($sql);
+            $query -> execute();
+
+            $result = $query->fetch();
+
+            return $result;
+
+        } catch (\PDOException $e) {
+            var_dump($e->getMessage());
         }
     }
 }

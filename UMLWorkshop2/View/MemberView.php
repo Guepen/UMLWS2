@@ -19,6 +19,20 @@ class MemberView{
         return $html;
     }
 
+    public function showMember($member){
+        $html = "
+        <a href='?'>Tillbaka</a>
+        <li>Medlemsnummer: ".$member["id"]."</li>
+        <li>Förnamn: ".$member["firstname"]."</li>
+        <li>Efternamn: ".$member["surname"]."</li>
+        <li>Personnummer: ".$member["ssnr"]."</li>
+        <a href='?Redigera'>Redigera användare</a>
+        <a href='?'>Ta bort användare</a>
+        <a href='?LäggTill'>Lägg till båt</a>";
+
+        return $html;
+    }
+
     public function showRegisterForm(){
         $html = "
              <form action='?' method='POST' >
@@ -55,9 +69,30 @@ class MemberView{
     }
 
     public function userPressedMember(){
-        if(isset($_GET[''])){
+        $request_path = $_SERVER['REQUEST_URI'];
+        $path = explode("/", $request_path); // splitting the path
+        $last = end($path);
+        $end = str_replace("?", "", $last);
 
+        if(isset($_GET[$end])){
+            return true;
         }
+        return false;
+    }
+
+    public function getUserId(){
+        $request_path = $_SERVER['REQUEST_URI'];
+        $path = explode("/", $request_path); // splitting the path
+        $last = end($path);
+        $end = str_replace("?", "", $last);
+        return $end;
+    }
+
+    public function userPressedAlter(){
+        if(isset($_GET['Medlem'])){
+            return true;
+        }
+        return false;
     }
 
     public function userHasPressedRegister(){
