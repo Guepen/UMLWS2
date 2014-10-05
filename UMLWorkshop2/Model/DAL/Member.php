@@ -26,10 +26,6 @@ class Member{
         return $this->ssnr;
     }
 
-    public function setId(){
-       return $this->id = \uniqid();
-    }
-
     public function getId(){
         return $this->id;
     }

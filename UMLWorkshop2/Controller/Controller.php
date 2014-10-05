@@ -34,6 +34,30 @@ class Controller{
             return $this->memberView->showMember($member);
         }
 
+        if($this->memberView->userPressedAlter()){
+            return $this->memberView->showAlterForm();
+        }
+
+        if($this->memberView->userHasPressedAlter()){
+            $id = $this->memberView->getMemberId();
+            $end = str_replace("?Redigeraanv%C3%A4ndare", "", $id);
+
+            $this->memberView->getInputs();
+            $firstname = $this->memberView->getFirstname();
+            $surname = $this->memberView->getSurname();
+            $ssnr = $this->memberView->getSsnr();
+
+            $member = new Member($firstname, $surname, $ssnr, $end);
+            $this->memberRepository->alterMember($member);
+        }
+
+        if($this->memberView->userPressedRemove()){
+            $id = $this->memberView->getMemberId();
+            $end = str_replace("?Tabortanv%C3%A4ndare=", "", $id);
+
+            $this->memberRepository->deleteMember($end);
+        }
+
         return $this->memberView->showMembers($this->memberRepository->getMembers());
     }
 

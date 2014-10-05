@@ -80,4 +80,31 @@ class MemberRepository extends Repository {
             var_dump($e->getMessage());
         }
     }
+
+    public function alterMember(Member $member){
+        try {
+            $sql = "UPDATE $this->dbTable SET ". self::$firstname ."=?, ". self::$surname ."=?, ". self::$ssnr ."=? WHERE " . self::$id . "=?";
+
+            $params = array($member->getFirstname(), $member->getSurname(), $member->getSsnr(), $member->getId());
+
+            $query = $this->db->prepare($sql);
+            $query->execute($params);
+
+        } catch (\PDOException $e) {
+            var_dump($e->getMessage());
+        }
+    }
+
+    public function deleteMember($id){
+        try{
+            $sql = "DELETE FROM $this->dbTable WHERE ". self::$id ."=?";
+            $params = array($id);
+
+            $query = $this->db->prepare($sql);
+            $query->execute($params);
+        }
+        catch(\PDOException $e){
+            var_dump($e->getMessage());
+        }
+    }
 }
