@@ -9,10 +9,24 @@ class MemberView{
     public function showMembers($memberList){
         $ret = "";
         foreach($memberList as $member){
-                $ret .= "<li><a href='?".$member->getId()."'>" . $member->getId() . " " . $member->getFirstname() . " " . $member->getSurname() . "</a></li>";
+                $ret .= "<li><a href='?".$member->getId()."'>" . $member->getId() . " " . $member->getFirstname() . " " . $member->getSurname() . " " . $member->getCount() . "</a></li>";
         }
         $html = "
+        <a href='?Fulllista='>Visa fullständig lista med medlemmar</a>
         <a href='?Register'>Registrera medlem</a>
+        $ret
+        ";
+
+        return $html;
+    }
+
+    public function showMembersFull($memberList){
+        $ret = "";
+        foreach($memberList as $member){
+            $ret .= "<li>" . $member->getId() . " " . $member->getFirstname() . " " . $member->getSurname() . " " . $member->getSsnr() . ", Båttyp: " . $member->getCount() . ", Båtlängd: ". $member->getType() ." <a href='?Redigerabåt=".$member->getBoatId()."'>Redigera båt</a> <a href='?Tabortbåt=".$member->getBoatId()."'>Ta bort båt</a></li>";
+        }
+        $html = "
+        <a href='?'>Tillbaka</a>
         $ret
         ";
 
@@ -26,7 +40,7 @@ class MemberView{
         <li>Förnamn: ".$member["firstname"]."</li>
         <li>Efternamn: ".$member["surname"]."</li>
         <li>Personnummer: ".$member["ssnr"]."</li>
-        <a href='?Redigeraanvändare=".$member["id"]."'>Redigera användare</a>
+        <a href='?Redigeraanvändare=".$member["id"]."'>Redigera avändare</a>
         <a href='?Tabortanvändare=".$member["id"]."'>Ta bort</a>
         <a href='?LäggTill=".$member["id"]."'>Lägg till båt</a>";
 
@@ -35,8 +49,8 @@ class MemberView{
 
     public function showRegisterForm(){
         $html = "
+             <a href='?'>Tillbaka</a>
              <form action='?' method='POST' >
- 				 <h1>Den glada piraten</h1>
  				 </br>
  				 </br>
  				 <label>Förnamn</label>
@@ -58,7 +72,6 @@ class MemberView{
         $html = "
              <a href='?$this->end'>Tillbaka</a>
              <form action='?Redigeraanvändare".$this->end."' method='POST' >
- 				 <h1>Den glada piraten</h1>
  				 </br>
  				 </br>
  				 <label>Förnamn</label>
@@ -118,6 +131,20 @@ class MemberView{
         return false;
     }
 
+    public function userPressedRegisterBoat(){
+        if(isset($_GET['LäggTill'])){
+            return true;
+        }
+        return false;
+    }
+
+    public function userPressedRemoveBoat(){
+        if(isset($_GET['Tabortbåt'])){
+            return true;
+        }
+        return false;
+    }
+
     public function userPressedRemove(){
         if(isset($_GET['Tabortanvändare'])){
             return true;
@@ -128,6 +155,20 @@ class MemberView{
     public function userHasPressedRegister(){
         if(isset($_GET['Register'])){
            return true;
+        }
+        return false;
+    }
+
+    public function userPressedGetFullMemberList(){
+        if(isset($_GET['Fulllista'])){
+            return true;
+        }
+        return false;
+    }
+
+    public function userHasPressedAlterBoat(){
+        if(isset($_GET['Redigerabåt'])){
+            return true;
         }
         return false;
     }

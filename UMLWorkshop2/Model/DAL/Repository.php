@@ -11,6 +11,7 @@ abstract class Repository{
     protected  $dbConnectionString = 'mysql:host=127.0.0.1;dbname=umlws2';
     protected  $dbConnection;
     protected  $dbTable;
+    protected  $dbTable2;
 
     protected function connection(){
         if($this->dbConnection == null){
