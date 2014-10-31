@@ -1,7 +1,6 @@
 <?php
 
 require_once "./Model/DAL/Repository.php";
-require_once "./Model/MemberModel.php";
 
 class MemberRepository extends Repository {
     private static $firstname = 'firstname';
@@ -11,14 +10,12 @@ class MemberRepository extends Repository {
     private static $memberId = 'memberId';
     private $db;
     private $memberList;
-    private $memberModel;
 
     public function __construct(){
         $this->dbTable = 'member';
         $this->dbTable2 = 'boat';
         $this->db = $this->connection();
         $this->memberList = array();
-        $this->memberModel = new MemberModel();
     }
 
     public function add(Member $member){
