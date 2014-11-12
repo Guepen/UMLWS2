@@ -13,7 +13,7 @@ class BoatView{
     public function boatRegisterForm($end){
         $html = "
              <a href='?$end'>Tillbaka</a>
-             <form action='?LäggTill".$end."' method='POST' >
+             <form action='?LaggTill".$end."' method='POST' >
  				 </br>
  				 </br>
  				 <select name='boatType'>
@@ -37,7 +37,7 @@ class BoatView{
     public function boatAlterForm($end){
         $html = "
              <a href='?'>Tillbaka</a>
-             <form action='?Redigerabåt".$end."' method='POST' >
+             <form action='?Redigerabat".$end."' method='POST' >
  				 </br>
  				 </br>
  				 <select name='boatType'>

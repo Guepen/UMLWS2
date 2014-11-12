@@ -9,12 +9,12 @@
 class Boat{
     private $type;
     private $length;
-    private $memberId;
+    private $boatId;
 
-    public function __construct($type, $length, $memberId){
+    public function __construct($type, $length, $boatId = null){
         $this->type = $type;
         $this->length = $length;
-        $this->memberId = $memberId;
+        $this->boatId = $boatId;
     }
 
     public function getType(){
@@ -25,7 +25,7 @@ class Boat{
         return $this->length;
     }
 
-    public function getMemberId(){
-        return $this->memberId;
+    public function getBoatId(){
+        return $this->boatId;
     }
 }

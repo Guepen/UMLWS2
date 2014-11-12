@@ -1,5 +1,7 @@
 <?php
 
+require_once("./Model/DAL/BoatRepository.php");
+
 class MemberView{
     private $firstname;
     private $surname;
@@ -21,9 +23,13 @@ class MemberView{
     }
 
     public function showMembersFull($memberList){
+        $boatRepository = new BoatRepository();
         $ret = "";
         foreach($memberList as $member){
-            $ret .= "<li>" . $member->getId() . " " . $member->getFirstname() . " " . $member->getSurname() . " " . $member->getSsnr() . ", Båttyp: " . $member->getCount() . ", Båtlängd: ". $member->getType() ." <a href='?Redigerabåt=".$member->getBoatId()."'>Redigera båt</a> <a href='?Tabortbåt=".$member->getBoatId()."'>Ta bort båt</a></li>";
+            $boatList = $boatRepository->getBoats($member->getId());
+            foreach($boatList as $boat){
+                $ret .= "<li>" . $member->getId() . " " . $member->getFirstname() . " " . $member->getSurname() . " " . $member->getSsnr() . ", Båttyp: " . $boat->getType() . ", Båtlängd: ". $boat->getLength() ." <a href='?Redigerabat=".$boat->getBoatId()."'>Redigera båt</a> <a href='?Tabortbat=".$boat->getBoatId()."'>Ta bort båt</a></li>";
+            }
         }
         $html = "
         <a href='?'>Tillbaka</a>
@@ -40,9 +46,9 @@ class MemberView{
         <li>Förnamn: ".$member["firstname"]."</li>
         <li>Efternamn: ".$member["surname"]."</li>
         <li>Personnummer: ".$member["ssnr"]."</li>
-        <a href='?Redigeraanvändare=".$member["id"]."'>Redigera avändare</a>
-        <a href='?Tabortanvändare=".$member["id"]."'>Ta bort</a>
-        <a href='?LäggTill=".$member["id"]."'>Lägg till båt</a>";
+        <a href='?Redigeraanvandare=".$member["id"]."'>Redigera avändare</a>
+        <a href='?Tabortanvandare=".$member["id"]."'>Ta bort</a>
+        <a href='?LaggTill=".$member["id"]."'>Lägg till båt</a>";
 
         return $html;
     }
@@ -71,7 +77,7 @@ class MemberView{
     public function showAlterForm(){
         $html = "
              <a href='?$this->end'>Tillbaka</a>
-             <form action='?Redigeraanvändare".$this->end."' method='POST' >
+             <form action='?Redigeraanvandare".$this->end."' method='POST' >
  				 </br>
  				 </br>
  				 <label>Förnamn</label>
@@ -104,7 +110,8 @@ class MemberView{
     }
 
     public function userPressedMember(){
-        $end = $this->getUserId();
+        $id = $this->getUrl();
+        $end = $this->getId($id);
 
         if(isset($_GET[$end])){
             return true;
@@ -112,41 +119,53 @@ class MemberView{
         return false;
     }
 
-    public function getUserId(){
+    /*public function getUserId(){
         $request_path = $_SERVER['REQUEST_URI'];
         $path = explode("/", $request_path); // splitting the path
         $last = end($path);
         $end = str_replace("?", "", $last);
         return $end;
+    }*/
+
+    public function getId($string){
+        $this->end = preg_replace("/[^0-9]/", "", $string);
+        return $this->end;
     }
 
-    public function userPressedAlter(){
+    public function getUrl(){
         $request_path = $_SERVER['REQUEST_URI'];
         $path = explode("/", $request_path); // splitting the path
         $last = end($path);
-        $this->end = str_replace("?Redigeraanv%C3%A4ndare=", "", $last);
-        if(isset($_GET['Redigeraanvändare'])){
+        return $last;
+    }
+
+    public function userPressedAlter(){
+        /*$request_path = $_SERVER['REQUEST_URI'];
+        $path = explode("/", $request_path); // splitting the path
+        $last = end($path);
+        $this->end = str_replace("?Redigeraanv%C3%A4ndare=", "", $last);*/
+        if(isset($_GET['Redigeraanvandare'])){
             return true;
         }
         return false;
     }
 
     public function userPressedRegisterBoat(){
-        if(isset($_GET['LäggTill'])){
+        if(isset($_GET['LaggTill'])){
             return true;
         }
         return false;
     }
 
     public function userPressedRemoveBoat(){
-        if(isset($_GET['Tabortbåt'])){
+        if(isset($_GET['Tabortbat'])){
             return true;
         }
         return false;
     }
 
     public function userPressedRemove(){
-        if(isset($_GET['Tabortanvändare'])){
+        if(isset($_GET['Tabortanvandare'])){
             return true;
         }
         return false;
@@ -167,7 +186,7 @@ class MemberView{
     }
 
     public function userHasPressedAlterBoat(){
-        if(isset($_GET['Redigerabåt'])){
+        if(isset($_GET['Redigerabat'])){
             return true;
         }
         return false;
@@ -199,7 +218,7 @@ class MemberView{
         return $this->ssnr;
     }
 
-    public function getMemberId(){
+    /*public function getMemberId(){
         return $this->end;
-    }
+    }*/
 }

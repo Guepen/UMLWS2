@@ -35,7 +35,8 @@ class Controller{
         }
 
         if($this->memberView->userPressedMember()){
-            $id = $this->memberView->getUserId();
+            $end = $this->memberView->getUrl();
+            $id = $this->memberView->getId($end);
             $member = $this->memberRepository->getMember($id);
             return $this->memberView->showMember($member);
         }
@@ -45,9 +46,8 @@ class Controller{
         }
 
         if($this->memberView->userHasPressedAlter()){
-            $id = $this->memberView->getMemberId();
-            $end = str_replace("?Redigeraanv%C3%A4ndare", "", $id);
-
+            $id = $this->memberView->getUrl();
+            $end = $this->memberView->getId($id);
             $this->memberView->getInputs();
             $firstname = $this->memberView->getFirstname();
             $surname = $this->memberView->getSurname();
@@ -58,38 +58,38 @@ class Controller{
         }
 
         if($this->memberView->userPressedRemove()){
-            $id = $this->memberView->getMemberId();
-            $end = str_replace("?Tabortanv%C3%A4ndare=", "", $id);
+            $id = $this->memberView->getUrl();
+            $end = $this->memberView->getId($id);
 
             $this->memberRepository->deleteMember($end);
         }
 
         if($this->memberView->userPressedRegisterBoat()){
-            $id = $this->memberView->getMemberId();
-            $end = str_replace("?L%C3%A4ggTill=", "", $id);
+            $id = $this->memberView->getUrl();
+            $end = $this->memberView->getId($id);
             return $this->boatView->boatRegisterForm($end);
         }
 
         if($this->boatView->userHasPressedRegisterBoat()){
-            $id = $this->memberView->getMemberId();
-            $memberId = str_replace("?L%C3%A4ggTill", "", $id);
+            $id = $this->memberView->getUrl();
+            $memberId = $this->memberView->getId($id);
             $this->boatView->getBoatInputs();
             $type = $this->boatView->getBoatType();
             $length = $this->boatView->getBoatLength();
 
-            $boat = new Boat($type, $length, $memberId);
-            $this->boatRepository->addBoat($boat);
+            $boat = new Boat($type, $length);
+            $this->boatRepository->addBoat($boat, $memberId);
         }
 
         if($this->memberView->userHasPressedAlterBoat()){
-            $id = $this->memberView->getMemberId();
-            $boatId = str_replace("?Redigerab%C3%A5t=", "", $id);
+            $id = $this->memberView->getUrl();
+            $boatId = $this->memberView->getId($id);
             return $this->boatView->boatAlterForm($boatId);
         }
 
         if($this->boatView->userHasPressedAlterBoat()){
-            $id = $this->memberView->getMemberId();
-            $boatId = str_replace("?Redigerab%C3%A5t", "", $id);
+            $id = $this->memberView->getUrl();
+            $boatId = $this->memberView->getId($id);
             $this->boatView->getBoatInputs();
             $type = $this->boatView->getBoatType();
             $length = $this->boatView->getBoatLength();
@@ -99,8 +99,8 @@ class Controller{
         }
 
         if($this->memberView->userPressedRemoveBoat()){
-            $id = $this->memberView->getMemberId();
-            $boatId = str_replace("?Tabortb%C3%A5t=", "", $id);
+            $id = $this->memberView->getUrl();
+            $boatId = $this->memberView->getId($id);
 
             $this->boatRepository->removeBoat($boatId);
         }

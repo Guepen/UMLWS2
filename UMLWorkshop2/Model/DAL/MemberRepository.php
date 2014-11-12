@@ -65,10 +65,7 @@ class MemberRepository extends Repository {
 
     public function getFullMembers(){
         try {
-            $sql = "SELECT *
-            FROM $this->dbTable
-            LEFT JOIN $this->dbTable2
-            ON $this->dbTable.".self::$id."= $this->dbTable2.".self::$memberId."";
+            $sql = "SELECT * FROM $this->dbTable";
 
             $query = $this->db->prepare($sql);
             $query->execute();
@@ -78,11 +75,8 @@ class MemberRepository extends Repository {
                 $surname = $member['surname'];
                 $ssnr = $member['ssnr'];
                 $unique = $member['id'];
-                $type = $member['type'];
-                $length = $member['length'];
-                $boatId = $member['boatId'];
 
-                $memb = new Member($firstname, $surname, $ssnr, $unique, $type, $length, $boatId);
+                $memb = new Member($firstname, $surname, $ssnr, $unique);
 
                 $this->memberList[] = $memb;
             }
