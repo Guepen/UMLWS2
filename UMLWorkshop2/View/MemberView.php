@@ -119,14 +119,6 @@ class MemberView{
         return false;
     }
 
-    /*public function getUserId(){
-        $request_path = $_SERVER['REQUEST_URI'];
-        $path = explode("/", $request_path); // splitting the path
-        $last = end($path);
-        $end = str_replace("?", "", $last);
-        return $end;
-    }*/
-
     public function getId($string){
         $this->end = preg_replace("/[^0-9]/", "", $string);
         return $this->end;
@@ -140,10 +132,6 @@ class MemberView{
     }
 
     public function userPressedAlter(){
-        /*$request_path = $_SERVER['REQUEST_URI'];
-        $path = explode("/", $request_path); // splitting the path
-        $last = end($path);
-        $this->end = str_replace("?Redigeraanv%C3%A4ndare=", "", $last);*/
         if(isset($_GET['Redigeraanvandare'])){
             return true;
         }
@@ -217,8 +205,4 @@ class MemberView{
     public function getSsnr(){
         return $this->ssnr;
     }
-
-    /*public function getMemberId(){
-        return $this->end;
-    }*/
 }
